@@ -1,0 +1,9 @@
+# Supervised blocks plus HSIC/CKA independence constraints (Lopez et al.,
+# 2018): the complement of each block is decorrelated from its factor, and
+# blocks are decorrelated from each other.
+model:
+  factors:
+    model_type: {supervised_weight: 1.0, hsic_weight: 5.0}
+    tissue: {supervised_weight: 1.0, hsic_weight: 2.0}
+    emt: {supervised_weight: 1.0, hsic_weight: 2.0}
+  block_hsic_weight: 1.0

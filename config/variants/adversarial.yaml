@@ -1,0 +1,8 @@
+# MOSA's existing adversarial branch: a source discriminator on the whole
+# latent space, no block structure.
+model:
+  free_dim: 64
+  factors:
+    model_type: {block_dim: 0, adversarial_weight: 0.1}
+    tissue: {block_dim: 0}
+    emt: {block_dim: 0}

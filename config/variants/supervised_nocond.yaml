@@ -1,0 +1,9 @@
+# Supervised blocks with the source hidden from the decoders, so the source
+# block is the only route for technical variation to reach reconstructions.
+model:
+  factors:
+    model_type: {supervised_weight: 1.0, adversarial_weight: 0.1}
+    tissue: {supervised_weight: 1.0}
+    emt: {supervised_weight: 1.0}
+  decoder_conditionals: [tissue, mutations]
+  adversarial_warmup_epochs: 10

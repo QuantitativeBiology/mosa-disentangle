@@ -1,0 +1,9 @@
+# Everything combined: supervised blocks, adversarial leakage penalties and
+# HSIC/CKA independence constraints.
+model:
+  factors:
+    model_type: {supervised_weight: 1.0, adversarial_weight: 0.1, hsic_weight: 5.0}
+    tissue: {supervised_weight: 1.0, adversarial_weight: 0.05, hsic_weight: 2.0}
+    emt: {supervised_weight: 1.0, hsic_weight: 2.0}
+  block_hsic_weight: 1.0
+  adversarial_warmup_epochs: 10

@@ -1,0 +1,10 @@
+# DIP-VAE-II regulariser on the aggregate posterior (unsupervised
+# disentanglement, as explored earlier in the PhenPred repository).
+model:
+  free_dim: 64
+  factors:
+    model_type: {block_dim: 0}
+    tissue: {block_dim: 0}
+    emt: {block_dim: 0}
+  dip_lambda_od: 5.0
+  dip_lambda_d: 0.5

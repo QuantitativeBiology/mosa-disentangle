@@ -1,0 +1,35 @@
+# Real two-laboratory proteomics dataset (Sanger vs CCLE); 290 cell lines are
+# measured in both, so folds are grouped by cell line.
+data:
+  path: ""
+  views: [proteomics]
+  discrete_views: []
+  use_tissue: true
+  use_mutations: false
+
+model:
+  views:
+    proteomics: {hidden_layer_dims: [512, 256], dropout_p: 0.1}
+  free_dim: 32
+  factors:
+    model_type: {column: model_type, kind: categorical, block_dim: 4}
+    tissue: {column: tissue, kind: categorical, block_dim: 12}
+    emt: {column: emt, kind: continuous, block_dim: 2}
+  decoder_conditionals: [model_type, tissue]
+  fusion_method: concat
+  view_dropout_prob: 0.0
+  kl_weight: 1.5e-4
+  learning_rate: 1.0e-3
+  adv_learning_rate: 1.0e-3
+  num_epochs: 300
+  batch_size: 64
+  early_stopping_patience: 25
+  weighted_random_sampler: true
+  preprocessing_mode: standardize
+  accelerator: auto
+  devices: 1
+  random_seed: 0
+
+evaluation:
+  n_folds: 3
+  group: cell_line

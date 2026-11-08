@@ -1,0 +1,7 @@
+# Supervised latent blocks: each block predicts its own factor; nothing stops
+# the other blocks from also encoding it.
+model:
+  factors:
+    model_type: {supervised_weight: 1.0}
+    tissue: {supervised_weight: 1.0}
+    emt: {supervised_weight: 1.0}

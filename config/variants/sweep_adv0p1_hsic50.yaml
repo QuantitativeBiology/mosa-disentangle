@@ -1,0 +1,14 @@
+# Sweep point on top of `full_nocond`: source adversarial_weight = 0.1
+# (confusion mode), source hsic_weight = 50.
+model:
+  factors:
+    model_type:
+      supervised_weight: 1.0
+      adversarial_weight: 0.1
+      adversarial_mode: confusion
+      hsic_weight: 50
+    tissue: {supervised_weight: 1.0, adversarial_weight: 0.05, adversarial_mode: confusion, hsic_weight: 2.0}
+    emt: {supervised_weight: 1.0, hsic_weight: 2.0}
+  block_hsic_weight: 1.0
+  decoder_conditionals: [tissue, mutations]
+  adversarial_warmup_epochs: 10

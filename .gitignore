@@ -1,0 +1,26 @@
+# Data: raw downloads and derived datasets are not versioned (see data/README.md)
+data/*
+!data/README.md
+
+# Results: summary tables and figures are committed; bulky run outputs are not
+results/runs/
+results/**/*.parquet
+results/**/*.ckpt
+results/**/lightning_logs/
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.pytest_cache/
+.ruff_cache/
+.snakemake/
+
+# Editors / OS
+.DS_Store
+*.swp
+
+# Local run logs
+logs/

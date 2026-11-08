@@ -1,0 +1,8 @@
+# MIDAS-style: supervised blocks plus adversarial leakage discriminators
+# (source predicted from the biological blocks is penalised).
+model:
+  factors:
+    model_type: {supervised_weight: 1.0, adversarial_weight: 0.1}
+    tissue: {supervised_weight: 1.0, adversarial_weight: 0.05}
+    emt: {supervised_weight: 1.0}
+  adversarial_warmup_epochs: 10

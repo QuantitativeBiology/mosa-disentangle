@@ -1,0 +1,52 @@
+# Base configuration for the multi-omic cell line datasets (real and with
+# simulated sources). Variants in config/variants/ override the model block.
+data:
+  path: ""                      # set by the pipeline
+  views:
+    - transcriptomics
+    - proteomics
+    - methylation
+    - metabolomics
+    - drugresponse
+    - crisprcas9
+    - copynumber
+  discrete_views: [copynumber]
+  use_tissue: true
+  use_mutations: true
+
+model:
+  views:
+    transcriptomics: {hidden_layer_dims: [512, 256], dropout_p: 0.1}
+    proteomics: {hidden_layer_dims: [512, 256], dropout_p: 0.1}
+    methylation: {hidden_layer_dims: [512, 256], dropout_p: 0.1}
+    metabolomics: {hidden_layer_dims: [128, 64], dropout_p: 0.1}
+    drugresponse: {hidden_layer_dims: [256, 128], dropout_p: 0.1}
+    crisprcas9: {hidden_layer_dims: [512, 256], dropout_p: 0.1}
+    copynumber: {hidden_layer_dims: [256, 128], dropout_p: 0.1}
+
+  # Latent layout: factor blocks + free block (joint_latent_dim is derived).
+  free_dim: 48
+  factors:
+    model_type: {column: model_type, kind: categorical, block_dim: 4}
+    tissue: {column: tissue, kind: categorical, block_dim: 12}
+    emt: {column: emt, kind: continuous, block_dim: 2}
+  decoder_conditionals: [model_type, tissue, mutations]
+
+  # MOSA defaults, scaled for the derived latent width (~66 dims).
+  fusion_method: concat
+  view_dropout_prob: 0.2
+  kl_weight: 1.5e-4
+  learning_rate: 1.0e-3
+  adv_learning_rate: 1.0e-3
+  num_epochs: 300
+  batch_size: 64
+  early_stopping_patience: 25
+  weighted_random_sampler: true
+  preprocessing_mode: standardize
+  accelerator: auto
+  devices: 1
+  random_seed: 0
+
+evaluation:
+  n_folds: 3
+  stratify: model_type

@@ -1,0 +1,72 @@
+# Snakemake pipeline parameters.
+raw_dir: data/raw/figshare_24420580
+processed_dir: data/processed
+results_dir: results
+
+cell_lines:
+  min_views: 2
+  top_variance:
+    transcriptomics: 5000
+    methylation: 5000
+    proteomics: 4000
+    crisprcas9: 3000
+
+# Semi-synthetic technical factor on the cell line cohort, at increasing
+# confounding between pseudo-source and tissue.
+simulations:
+  sim_c00: {confounding: 0.0, seed: 0}
+  sim_c05: {confounding: 0.5, seed: 0}
+  sim_c09: {confounding: 0.9, seed: 0}
+simulation_defaults:
+  shift_sd: 0.8
+  scale_sd: 0.2
+  programme_fraction: 0.05
+  programme_shift: 1.5
+# Which datasets to run, with their base configuration, whether a ground-truth
+# file (<name>_truth.h5mu) exists, the reference source for counterfactual
+# decoding and an optional grouping column for the folds.
+datasets:
+  sim_c00: {base: config/datasets/cell_lines.yaml, truth: true, reference: cell_line}
+  sim_c05: {base: config/datasets/cell_lines.yaml, truth: true, reference: cell_line}
+  sim_c09: {base: config/datasets/cell_lines.yaml, truth: true, reference: cell_line}
+  proteomics_paired:
+    base: config/datasets/proteomics_paired.yaml
+    truth: true
+    reference: sanger
+    group: cell_line
+
+variants:
+  - baseline
+  - adversarial
+  - adversarial_confusion
+  - dip
+  - supervised
+  - supervised_nocond
+  - hsic
+  - midas
+  - full
+  - full_nocond
+
+# Additional (dataset, variant) combinations beyond the full grid above, used
+# for the penalty-strength sweep.
+extra_runs:
+  - dataset: sim_c05
+    variants:
+      - sweep_adv0p1_hsic5
+      - sweep_adv0p1_hsic20
+      - sweep_adv0p1_hsic50
+      - sweep_adv1_hsic5
+      - sweep_adv1_hsic20
+      - sweep_adv1_hsic50
+      - sweep_adv5_hsic5
+      - sweep_adv5_hsic20
+      - sweep_adv5_hsic50
+
+n_folds: 3
+seed: 0
+
+# Runs whose model is kept on disk for the counterfactual notebook.
+save_models:
+  - {dataset: sim_c05, variant: full_nocond}
+  - {dataset: sim_c05, variant: baseline}
+  - {dataset: sim_c05, variant: supervised_nocond}
